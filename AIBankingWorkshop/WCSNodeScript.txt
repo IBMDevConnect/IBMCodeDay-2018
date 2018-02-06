@@ -1,0 +1,26 @@
+{
+  "output": {
+    "text": {
+      "values": [
+        "$data"
+      ],
+      "selection_policy": "sequential"
+    }
+  },
+  "actions": [
+    {
+      "name": "<yourIBMCloudId>_dev/actions/mydiscoveryCall",
+      "type": "server",
+      "parameters": {
+        "url": "https://gateway.watsonplatform.net",
+        "input": "<? input.text ?>",
+        "password": "<Discovery password saved earlier>",
+        "username": "<Discovery username saved earlier>",
+        "collection_id": "<replace-collectionid>",
+        "environment_id": "<replace-environmentid>"
+      },
+      "credentials": "$mycreds",
+      "result_variable": "$data"
+    }
+  ]
+}
