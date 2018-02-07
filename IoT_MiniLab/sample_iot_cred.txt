@@ -1,0 +1,8 @@
+{
+ "org": "dzj2si",
+ "type": "MyIoTDevice",
+ "id": "Pi",
+ "auth-method": "token",
+ "auth-token": "Geek12345",
+ "clean-session": "true"
+ }

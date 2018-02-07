@@ -26,15 +26,13 @@ GPIO.output(error_led,False)
 
 BS1=False # Set Flag BS1 to indicate LED is initially off
 BS2=False
-options = {
- "org": "dzj2si",
- "type": "MyIoTDevice",
- "id": "Pi",
- "auth-method": "token",
- "auth-token": "Geek12345",
- "clean-session": "true"
- }
 
+#read the IoT cred from file
+f=open("./sample_iot_cred.txt","r")
+cred=f.read()
+print("supplied IoT credentials are %s",cred)
+f.close()
+options = cred
 
 def commandProcessor(cmd):
  data=json.loads(json.dumps(cmd.data))
