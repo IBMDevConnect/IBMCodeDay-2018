@@ -25,10 +25,7 @@ GPIO.output(iot_connection_led,False)
 GPIO.output(error_led,False)
 
 #read the IoT cred from file
-f=open("./sample_iot_cred.txt","r")
-cred=f.read()
-print("supplied IoT credentials are %s",cred)
-f.close()
+cred = json.loads(open("./sample_iot_cred.txt","r").read())
 options = cred
 
 def commandProcessor(cmd):
