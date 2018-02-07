@@ -24,17 +24,9 @@ GPIO.output(response_led,False)
 GPIO.output(iot_connection_led,False)
 GPIO.output(error_led,False)
 
-BS1=False # Set Flag BS1 to indicate LED is initially off
-BS2=False
-options = {
- "org": "dzj2si",
- "type": "MyIoTDevice",
- "id": "Pi",
- "auth-method": "token",
- "auth-token": "Geek12345",
- "clean-session": "true"
- }
-
+#read the IoT cred from file
+cred = json.loads(open("./sample_iot_cred.txt","r").read())
+options = cred
 
 def commandProcessor(cmd):
  data=json.loads(json.dumps(cmd.data))

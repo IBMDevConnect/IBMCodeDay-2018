@@ -1,0 +1,8 @@
+{
+ "org": "xxxxx",
+ "type": "xxxxx",
+ "id": "xxxxx",
+ "auth-method": "token",
+ "auth-token": "xxxxxx",
+ "clean-session": "true"
+ }
