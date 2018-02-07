@@ -24,9 +24,6 @@ GPIO.output(response_led,False)
 GPIO.output(iot_connection_led,False)
 GPIO.output(error_led,False)
 
-BS1=False # Set Flag BS1 to indicate LED is initially off
-BS2=False
-
 #read the IoT cred from file
 f=open("./sample_iot_cred.txt","r")
 cred=f.read()
