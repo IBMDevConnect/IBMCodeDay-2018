@@ -1,0 +1,64 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: microservice-session-sample
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: session-deployment
+    spec:
+      containers:
+      - name: microservice-session
+        image: microservice-session:latest
+        ports:
+          - containerPort: 9080
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: MB_KEYSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mb-keystore-password
+                key: password
+          - name: MB_TRUSTSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mb-truststore-password
+                key: password
+        volumeMounts:
+        - name: keystore
+          mountPath: /etc/wlp/config/keystore
+        - name: truststore
+          mountPath: /etc/wlp/config/truststore
+        - name: liberty-config
+          mountPath: /config/configDropins
+        readinessProbe:
+          httpGet:
+            path: /sessions/nessProbe
+            port: 9080
+      volumes:
+      - name: keystore
+        secret:
+          secretName: mb-keystore
+      - name: truststore
+        secret:
+          secretName: mb-truststore
+      - name: liberty-config
+        configMap:
+          name: liberty-logging-config
+          items:
+            - key: keystore.xml
+              path: defaults/keystore.xml
+            - key: logging.xml
+              path: defaults/logging.xml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: session-service
+spec:
+  ports:
+    - port: 9080
+  selector:
+    name: session-deployment

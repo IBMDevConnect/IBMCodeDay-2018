@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /schedule
+  name: schedule-ingress
+spec:
+  rules:
+  - host: 
+    http:
+      paths:
+      - path: /schedule
+        backend:
+          serviceName: schedule-service
+          servicePort: 9080
