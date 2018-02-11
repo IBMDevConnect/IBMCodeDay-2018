@@ -22,7 +22,7 @@ spec:
         env:
           - name: SOURCE_IP
            #change the value of IP with Kubernetes EXTERNAL-IP
-            value: 10.77.155.90
+            value: xxx.xxx.xx.xxx
 ---
 apiVersion: v1
 kind: Service
