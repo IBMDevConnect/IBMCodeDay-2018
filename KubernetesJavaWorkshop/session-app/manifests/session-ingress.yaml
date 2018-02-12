@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /sessions
+  name: session-ingress
+spec:
+  rules:
+  - host: 
+    http:
+      paths:
+      - path: /sessions
+        backend:
+          serviceName: session-service
+          servicePort: 9080

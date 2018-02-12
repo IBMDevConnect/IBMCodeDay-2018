@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /speaker
+  name: speaker-ingress
+spec:
+  rules:
+  - host: 
+    http:
+      paths:
+      - path: /speaker
+        backend:
+          serviceName: speaker-service
+          servicePort: 9080

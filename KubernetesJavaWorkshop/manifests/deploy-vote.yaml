@@ -1,0 +1,84 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: microservice-vote-sample
+  labels:
+    app: microprofile-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: vote-deployment
+    spec:
+      containers:
+      - name: microservice-vote
+        #change the image name
+        image: journeycode/microservice-vote-cloudant
+        ports:
+          - containerPort: 9080
+        imagePullPolicy: Always
+        command: ["/bin/sh","-c"]
+        args: ["if [ ! -z $dbPassword ]; then export dbUrl=http://$CLOUDANT_SERVICE_SERVICE_HOST:$CLOUDANT_SERVICE_SERVICE_PORT; exec /opt/ibm/wlp/bin/server run defaultServer; fi;"]
+        env:
+          - name: MB_KEYSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mb-keystore-password
+                key: password
+          - name: MB_TRUSTSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mb-truststore-password
+                key: password
+          - name: dbUsername
+            valueFrom:
+              secretKeyRef:
+                name: cloudant-secret
+                key: dbUsername
+          - name: dbPassword
+            valueFrom:
+              secretKeyRef:
+                name: cloudant-secret
+                key: dbPassword 
+          - name: dbHost
+            value: $CLOUDANT_SERVICE_SERVICE_HOST
+          - name: dbPort
+            value: $CLOUDANT_SERVICE_SERVICE_PORT
+        volumeMounts:
+        - name: keystore
+          mountPath: /etc/wlp/config/keystore
+        - name: truststore
+          mountPath: /etc/wlp/config/truststore
+        - name: liberty-config
+          mountPath: /config/configDropins
+      volumes:
+       - name: keystore
+         secret:
+           secretName: mb-keystore
+       - name: truststore
+         secret:
+           secretName: mb-truststore
+       - name: liberty-config
+         configMap:
+           name: liberty-logging-config
+           items:
+             - key: keystore.xml
+               path: defaults/keystore.xml
+             - key: logging.xml
+               path: defaults/logging.xml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote-service
+  labels:
+    app: microprofile-app
+spec:
+  ports:
+    - port: 9080
+      targetPort: 9080
+      nodePort: 30055
+  selector:
+    name: vote-deployment
+  type: NodePort

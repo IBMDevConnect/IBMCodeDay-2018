@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /vote
+  name: vote-ingress
+spec:
+  rules:
+  - host: 
+    http:
+      paths:
+      - path: /vote
+        backend:
+          serviceName: vote-service
+          servicePort: 9080

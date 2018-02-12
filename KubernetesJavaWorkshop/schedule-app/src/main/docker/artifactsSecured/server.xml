@@ -1,0 +1,46 @@
+<server description="microservice-schedule">
+
+    <!-- Enable features -->
+    <featureManager>
+      <feature>ssl-1.0</feature>
+      <feature>appSecurity-2.0</feature>
+      <feature>microProfile-1.0</feature>
+      <feature>jsp-2.3</feature>
+      <feature>openidConnectClient-1.0</feature>
+    </featureManager>
+
+    <httpEndpoint id="defaultHttpEndpoint"
+        host="*"
+        httpPort="9080"
+        httpsPort="9443" />
+
+    <oidcClientWebapp  contextPath="/oidcclient" />
+    <openidConnectClient id="rp" signatureAlgorithm="RS256" inboundPropagation="supported"
+           scope="openid profile email"
+           redirectToRPHostAndPort="https://${env.EXTERNAL_IP_ADDR}:31015"
+           httpsRequired="false"
+           clientId="rp"
+           clientSecret="rpSecret"
+           sharedKey="rpSecret"
+           issuerIdentifier="https://trustme"
+           authorizationEndpointUrl="https://${env.EXTERNAL_IP_ADDR}:31005/oidc/endpoint/OP/authorize"
+           tokenEndpointUrl="https://${env.EXTERNAL_IP_ADDR}:31005/oidc/endpoint/OP/token"
+           jwkEndpointUrl="https://${env.EXTERNAL_IP_ADDR}:31005/oidc/endpoint/OP/jwk"
+           audiences="abc123"
+           >
+    </openidConnectClient>
+
+<!--
+    <logging traceSpecification="com.ibm.ws.security.oauth*=all:com.ibm.ws.security.openid*=all"
+        traceFileName="trace.log" maxFileSize="50" maxFiles="10" />
+-->
+
+    <webApplication location="schedule.war" contextRoot="/">
+        <application-bnd>
+            <security-role name="ScheduleRole">  <!--  matches web.xml -->
+                <special-subject type="ALL_AUTHENTICATED_USERS" />
+            </security-role>
+        </application-bnd>
+    </webApplication>
+
+</server>
