@@ -28,11 +28,16 @@ Click the Create Cluster button, choose the "Free" cluster option and give it a 
 
 Install by IBM Cloud (Bluemix) CLI - Find the appropriate installer and follow the instructions [here](https://console.bluemix.net/docs/cli/index.html#downloads).
 
-***
-> TODO FIX INSTRUCTION FOR INDIA LAB
 
-Login to the CLI with `bx login`. When prompted, use API endpoint `api.ng.bluemix.net`
-***
+Login to the CLI with `bx login`. When prompted, use the API endpoint associated with the region in which you created the cluster. For example, if you created a cluster on "US South", then you'll use the `api.ng.bluemix.net` endpoint.
+
+Region | API Endpoint
+--- | ---
+US South | `api.ng.bluemix.net`
+US East | `api.us-east.bluemix.net`
+United Kingdom | `api.eu-gb.bluemix.net`
+Sydney | `api.au-syd.bluemix.net`
+Germany | `api.eu-de.bluemix.net`
 
 You'll need to install a couple of plugins for the IBM Cloud CLI as well:
 
@@ -94,9 +99,15 @@ If it's still not ready, you'll need to wait before proceeding. In the meantime,
 
 ### Configure CLI to connect to your Kubernetes Cluster
 
-> TODO: FIX API ENDPOINT for India Lab
+You should have already installed the IBM Cloud CLI as explained in the previous steps. If you haven't already, make sure you're logged in: `bx login`. If prompted, use the API endpoint associated with the region in which you created the cluster.
 
-You should have already installed the IBM Cloud CLI as explained in the previous steps. If you haven't already, make sure you're logged in: `bx login`. If prompted, use API endpoint `api.ng.bluemix.net`.
+Region | API Endpoint
+--- | ---
+US South | `api.ng.bluemix.net`
+US East | `api.us-east.bluemix.net`
+United Kingdom | `api.eu-gb.bluemix.net`
+Sydney | `api.au-syd.bluemix.net`
+Germany | `api.eu-de.bluemix.net`
 
 Run `bx cs init` to initialize your container-service plugin.
 
