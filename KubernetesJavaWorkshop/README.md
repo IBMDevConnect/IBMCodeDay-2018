@@ -55,8 +55,8 @@ bx cs init
 
 Let's clone the materials for the lab. First, `cd` to a working directory of your choice. Then jump to a terminal and type in:
 ```
-git clone https://github.com/svennam92/microprofile-hol.git
-cd microprofile-hol
+git clone https://github.com/IBMDevConnect/k8s-microprofile-hol.git
+cd k8s-microprofile-hol
 ```
 
 If this command didn't work, you need to install Git from [here](https://git-scm.com/downloads).
@@ -114,6 +114,8 @@ Run `bx cs init` to initialize your container-service plugin.
 Run `bx cs clusters` to see all your clusters in IBM Cloud - there should only be one.
 
 Run `bx cs cluster-config <cluster_name>` to download the configuration file that allows you to access the cluster. It tells you to run a `export` command. Copy-paste to execute that command.
+
+> Important Note: If you restart your terminal at any time, this exported ENV var goes away causing `kubectl` commands to stop working. This is because `kubectl` doesn't know where your cluster is anymore. You can bypass this by putting the EXPORT command in your terminal startup, such as a `.bash_profile` script. You can also save this `EXPORT` command and run it whenever you launch a new terminal.
 
 Run `kubectl cluster-info` to ensure that you're connected to the running Kubernetes Cluster. You should see something like this:
 
@@ -251,7 +253,7 @@ deployment "microservice-webapp-sample" created
 service "webapp-service" created
 ```
 
-After you have created all the services and deployments, you'll have to wait for 5 to 10 minutes. However, you can check the status of your deployment on Kubernetes UI. Run `kubectl proxy` and go to URL 'http://127.0.0.1:8001/ui' to check when the application containers are ready. If it asks you to login, you'll need to enter the token provided in the `cluster-config`.
+After you have created all the services and deployments, you'll have to wait for 5 to 10 minutes. However, you can check the status of your deployment on Kubernetes UI. First, we'll need to get the token from the `cluster-config`.
 
 There's a few ways to get that cluster-config, but here's one way. Let's retreive the token from the existing cluster-config file:
 ```
@@ -271,9 +273,10 @@ $ cat /Users/svennam/.bluemix/plugins/container-service/clusters/my-cluster-sg-1
           ...
           id-token: <COPY_THIS>
           ...
-
-Take id-token value and paste it into your browser with the `Token` option selected to login to the dashboard
 ```
+
+Next, run `kubectl proxy` and go to the URL 'http://127.0.0.1:8001/ui'. When it asks you to login, select the `Token` option and paste the `id-token` you retrieved above. Now you can check the status of your deployments.
+
 
 It'll look like this once it's ready:
 
